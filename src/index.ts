@@ -12,7 +12,7 @@ app.use(
       tags: [
         { name: "User", description: "User endpoint" },
         { name: "Pet", description: "Pet endpoint" },
-        // { name: "Tournament", description: "Tournament endpoint" },
+        { name: "Adoption", description: "Adoption endpoint" },
       ],
     },
   })

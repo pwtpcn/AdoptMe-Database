@@ -8,19 +8,50 @@ datasource db {
 }
 
 model user {
-  id       Int    @id @default(autoincrement())
-  username String @db.VarChar(20)
-  password String @db.VarChar(255)
-  pet      pet[]
+  user_id                            Int        @id @default(autoincrement())
+  username                           String     @db.VarChar(50)
+  email                              String     @unique @db.VarChar(100)
+  password                           String     @db.VarChar(255)
+  first_name                         String     @db.VarChar(50)
+  last_name                          String     @db.VarChar(50)
+  phone_number                       String     @db.VarChar(10)
+  photo_url                          String?    @db.VarChar(255)
+  salary                             Decimal    @db.Decimal(10, 2)
+  adoption_adoption_added_userTouser adoption[] @relation("adoption_added_userTouser")
+  adoption_adoption_adopt_userTouser adoption[] @relation("adoption_adopt_userTouser")
 }
 
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model pet {
-  id        Int    @id @default(autoincrement())
-  owner_id  Int
-  pet_name  String @db.VarChar(20)
-  age_year  Int    @default(0)
-  age_month Int
-  pet_type  String @db.VarChar(80)
-  pet_species String @db.VarChar(80)
-  user      user   @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  pet_id      Int        @id @default(autoincrement())
+  pet_name    String     @db.VarChar(50)
+  age_years   Int        @default(0)
+  age_months  Int        @default(0)
+  species     String     @db.VarChar(80)
+  breed       String?    @db.VarChar(80)
+  sex         sex?
+  photo_url   String?    @db.VarChar(255)
+  weight      Float      @db.Real
+  adopted     Boolean    @default(false)
+  spayed      Boolean    @default(false)
+  description String?
+  adoption    adoption[]
+}
+
+model adoption {
+  added_id                       Int       @id @default(autoincrement())
+  adoption_id                    Int?
+  added_user                     Int?
+  adopt_user                     Int?
+  pet_id                         Int?
+  added_at                       DateTime  @default(now()) @db.Timestamp(6)
+  adopted_at                     DateTime? @db.Timestamp(6)
+  user_adoption_added_userTouser user?     @relation("adoption_added_userTouser", fields: [added_user], references: [user_id], onUpdate: NoAction)
+  user_adoption_adopt_userTouser user?     @relation("adoption_adopt_userTouser", fields: [adopt_user], references: [user_id], onUpdate: NoAction)
+  pet                            pet?      @relation(fields: [pet_id], references: [pet_id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum sex {
+  Male
+  Female
 }
