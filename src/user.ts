@@ -30,7 +30,9 @@ app.post("/post", async ({body}) => {
         last_name: t.String(),
         phone_number: t.String(),
         photo_url : t.Optional(t.String()),
-        salary: t.Number()
+        salary: t.Number({
+            minimum: 0
+        })
     }),
     detail: {
         tags: [
@@ -57,7 +59,9 @@ app.put("/put", async ({body}) => {
         last_name: t.Optional(t.String()),
         phone_number: t.Optional(t.String()),
         photo_url : t.Optional(t.String()),
-        salary: t.Optional(t.Number())
+        salary: t.Optional(t.Number({
+            minimum: 0
+        }))
     }),
     detail: {
         tags: [

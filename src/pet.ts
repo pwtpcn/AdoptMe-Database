@@ -24,8 +24,13 @@ app.post("/post", async ({body}) => {
 },{
     body: t.Object({
         pet_name: t.String(),
-        age_year: t.Integer(),
-        age_month: t.Integer(),
+        age_year: t.Integer({
+            minimum: 1
+        }),
+        age_month: t.Integer({
+            minimum: 1,
+            maximum: 12
+        }),
         species: t.String(),
         breed: t.String(),
         sex: t.Enum(sex),
@@ -56,8 +61,13 @@ app.put("/put", async ({body}) => {
     body: t.Object({
         pet_id: t.Number(),
         pet_name: t.Optional(t.String()),
-        age_year: t.Optional(t.Integer()),
-        age_month: t.Optional(t.Integer()),
+        age_year: t.Optional(t.Integer({
+            minimum: 0
+        })),
+        age_month: t.Optional(t.Integer({
+            minimum: 1,
+            maximum: 12
+        })),
         species: t.Optional(t.String()),
         breed: t.Optional(t.String()),
         sex: t.Optional(t.Enum(sex)),

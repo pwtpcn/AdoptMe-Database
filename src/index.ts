@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import user from "./user";
 import pet from "./pet";
+import adoption from "./adoption";
 
 const app = new Elysia();
 app.use(
@@ -20,6 +21,7 @@ app.use(
 
 app.use(user);
 app.use(pet);
+app.use(adoption);
 
 app.listen(3000);
 

@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import db from "./db";
 
-const app = new Elysia({prefix:"/pet"});
+const app = new Elysia({prefix:"/adoption"});
 
 app.get("/get", async () => {
     const adoptionList = await db.adoption.findMany();
