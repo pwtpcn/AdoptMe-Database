@@ -9,11 +9,8 @@ app.get("/get", async () => {
     return petList;
   },{
       detail: {
-         tags: [
-          "Pet"
-         ] 
+         tags: ["Pet"] 
       }
-  
 });
 
 app.post("/post", async ({body}) => {
@@ -43,9 +40,7 @@ app.post("/post", async ({body}) => {
         description: t.String()
     }),
     detail: {
-        tags: [
-            "Pet"
-        ]
+        tags: ["Pet"]
     }
 });
 
@@ -80,9 +75,7 @@ app.put("/put", async ({body}) => {
         description: t.Optional(t.String())
     }),
     detail: {
-        tags: [
-            "Pet"
-        ]
+        tags: ["Pet"]
     }
 });
 
@@ -98,9 +91,7 @@ app.delete("/delete", async ({body}) => {
         pet_id: t.Number(),
     }),
     detail: {
-        tags: [
-            "Pet"
-        ]
+        tags: ["Pet"]
     }
 });
 

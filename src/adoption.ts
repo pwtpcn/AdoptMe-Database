@@ -8,9 +8,7 @@ app.get("/get", async () => {
     return adoptionList;
   },{
       detail: {
-         tags: [
-          "Adoption"
-         ] 
+         tags: ["Adoption"] 
       }
   
 });
@@ -27,9 +25,7 @@ app.post("/post", async ({body}) => {
         added_at: t.Date(),
     }),
     detail: {
-        tags: [
-            "Adoption"
-        ]
+        tags: ["Adoption"]
     }
 });
 
@@ -91,9 +87,7 @@ app.put("/put", async ({body}) => {
         adopted_at: t.Optional(t.Date())
     }),
     detail: {
-        tags: [
-            "Adoption"
-        ]
+        tags: ["Adoption"]
     }
 });
 
@@ -145,9 +139,7 @@ app.delete("/delete", async ({body}) => {
         added_id: t.Number()
     }),
     detail: {
-        tags: [
-            "Adoption"
-        ]
+        tags: ["Adoption"]
     }
 });
 

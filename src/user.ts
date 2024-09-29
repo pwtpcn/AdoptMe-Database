@@ -9,9 +9,7 @@ app.get("/get", async () => {
   return userList;
 },{
     detail: {
-       tags: [
-        "User"
-       ] 
+       tags: ["User"] 
     }
 }
 );
@@ -35,9 +33,7 @@ app.post("/post", async ({body}) => {
         })
     }),
     detail: {
-        tags: [
-         "User"
-        ] 
+        tags: ["User"] 
      }
 });
 
@@ -64,9 +60,7 @@ app.put("/put", async ({body}) => {
         }))
     }),
     detail: {
-        tags: [
-         "User"
-        ] 
+        tags: ["User"] 
      }
 });
 
@@ -82,9 +76,7 @@ app.delete("/delete", async ({body}) => {
         user_id: t.Number(),
     }),
     detail: {
-        tags: [
-         "User"
-        ] 
+        tags: ["User"] 
      }
 });
 

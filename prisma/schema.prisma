@@ -35,6 +35,7 @@ model pet {
   adopted     Boolean    @default(false)
   spayed      Boolean    @default(false)
   description String?
+  color       String?    @db.VarChar(80)
   adoption    adoption[]
 }
 
