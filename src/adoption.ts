@@ -29,45 +29,6 @@ app.post("/post", async ({body}) => {
     }
 });
 
-// async function add_max_id(body:any){
-//     if(body.adopted_at != null ) {
-//         const maxData = await db.adoption.findFirst({
-//             select:{adoption_id:true},
-//             orderBy:{
-//                 adoption_id: "desc"
-//             }
-//         });
-//         body.adoption_id = maxData?.adoption_id ? maxData.adoption_id +1 : -1;
-//     }
-// }
-// app.put("/adopted", async ({body}) => {
-//     await add_max_id(body);
-
-//     const adoption = await db.adoption.update({
-//         where: {
-//             added_id: body.added_id,
-//             adoption_id:{in:[null,-1]}
-//         },
-//         data: body
-//     });
-//     return adoption
-// },{
-//     body: t.Object({
-//         added_id: t.Number(),
-//         adoption_id : t.Optional(t.Number()),
-//         added_user: t.Optional(t.Number()),
-//         adopt_user: t.Optional(t.Number()),
-//         pet_id: t.Optional(t.Number()),
-//         added_at: t.Optional(t.Date()),
-//         adopted_at: t.Optional(t.Date())
-//     }),
-//     detail: {
-//         tags: [
-//             "Adoption"
-//         ]
-//     }
-// });
-
 app.put("/put", async ({body}) => {
     const adoption = await db.adoption.update({
         where: {
