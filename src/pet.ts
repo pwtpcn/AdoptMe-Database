@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
 import db from "./db";
-import { sex } from "@prisma/client";
+import {sex} from "@prisma/client";
 
 const app = new Elysia({prefix:"/pet"});
 
@@ -29,7 +29,7 @@ app.post("/post", async ({body}) => {
         }),
         age_months: t.Integer({
             minimum: 0,
-            maximum: 12
+            maximum: 11
         }),
         species: t.String(),
         breed: t.String(),
@@ -66,7 +66,7 @@ app.put("/put", async ({body}) => {
         })),
         age_months: t.Optional(t.Integer({
             minimum: 0,
-            maximum: 12
+            maximum: 11
         })),
         species: t.Optional(t.String()),
         breed: t.Optional(t.String()),

@@ -33,6 +33,45 @@ app.post("/post", async ({body}) => {
     }
 });
 
+// async function add_max_id(body:any){
+//     if(body.adopted_at != null ) {
+//         const maxData = await db.adoption.findFirst({
+//             select:{adoption_id:true},
+//             orderBy:{
+//                 adoption_id: "desc"
+//             }
+//         });
+//         body.adoption_id = maxData?.adoption_id ? maxData.adoption_id +1 : -1;
+//     }
+// }
+// app.put("/adopted", async ({body}) => {
+//     await add_max_id(body);
+
+//     const adoption = await db.adoption.update({
+//         where: {
+//             added_id: body.added_id,
+//             adoption_id:{in:[null,-1]}
+//         },
+//         data: body
+//     });
+//     return adoption
+// },{
+//     body: t.Object({
+//         added_id: t.Number(),
+//         adoption_id : t.Optional(t.Number()),
+//         added_user: t.Optional(t.Number()),
+//         adopt_user: t.Optional(t.Number()),
+//         pet_id: t.Optional(t.Number()),
+//         added_at: t.Optional(t.Date()),
+//         adopted_at: t.Optional(t.Date())
+//     }),
+//     detail: {
+//         tags: [
+//             "Adoption"
+//         ]
+//     }
+// });
+
 app.put("/put", async ({body}) => {
     const adoption = await db.adoption.update({
         where: {
@@ -57,6 +96,42 @@ app.put("/put", async ({body}) => {
         ]
     }
 });
+
+app.put(
+    "/adopt",
+    async ({ body }) => {
+      const adoption: any = await db.$queryRaw`
+      UPDATE adoption 
+         SET adoption_id = (SELECT MAX(adoption_id) + 1 FROM adoption),
+             adopt_user = ${body.adopt_user},
+             adopted_at = ${new Date()}
+         WHERE added_id = ${body.added_id} AND adopt_user IS NULL
+         RETURNING added_id,adoption_id,added_user,adopt_user,pet_id,added_at,adopted_at;
+      `;
+      if (adoption.length === 0) {
+        return {
+          added_id: body.added_id,
+          Status: "Already adopted or not exist",
+        };
+      }
+      return adoption;
+    },
+    {
+      error({error}: any){
+          console.log(error);
+          if(error.code === 'P2010'){
+              return new Response(JSON.stringify({Error:'P2010', message:'Do not have adopt_user that you provided.'}), {headers:{'Content-Type': 'application/json'},status: 400});
+          }
+      },
+      body: t.Object({
+        added_id: t.Number(),
+        adopt_user: t.Number(),
+      }),
+      detail: {
+        tags: ["Adoption"],
+      },
+    }
+  );
 
 app.delete("/delete", async ({body}) => {
     const adoption = await db.adoption.delete({
