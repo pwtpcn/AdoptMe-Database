@@ -10,7 +10,6 @@ app.get("/get", async () => {
       detail: {
          tags: ["Adoption"] 
       }
-  
 });
 
 app.post("/post", async ({body}) => {
