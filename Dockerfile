@@ -3,6 +3,7 @@ WORKDIR /usr/src/app
 
 COPY package.json .
 RUN bun install
+COPY . .
 
 #env
 ARG URL 
