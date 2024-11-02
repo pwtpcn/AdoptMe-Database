@@ -145,25 +145,47 @@ app.post(
       const hashedPassword = encryptWithSalt(body.password, salt);
       const photoUrl = body.photo_url ? body.photo_url : "default_photo";
       const role: Priority = body.priority;
+      
+      if (role === "user") {
+        const insertedUser = await db.$queryRaw`
+        INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority")
+        VALUES (
+          ${body.username},
+          ${hashedPassword},
+          ${salt},
+          ${body.email},
+          ${body.first_name},
+          ${body.last_name},
+          ${body.phone_number},
+          ${photoUrl},
+          ${body.salary},
+          'user'
+        )
+        RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority"
+        `;
+        console.log("User inserted successfully: ", insertedUser);
+        return insertedUser;
+      } else {
+        const insertedUser = await db.$queryRaw`
+        INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority")
+        VALUES (
+          ${body.username},
+          ${hashedPassword},
+          ${salt},
+          ${body.email},
+          ${body.first_name},
+          ${body.last_name},
+          ${body.phone_number},
+          ${photoUrl},
+          ${body.salary},
+          'admin'
+        )
+        RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority"
+        `;
+        console.log("User inserted successfully: ", insertedUser);
+        return insertedUser;
+      }
 
-      const insertedUser = await db.$queryRaw`
-      INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority")
-      VALUES (
-        ${body.username},
-        ${hashedPassword},
-        ${salt},
-        ${body.email},
-        ${body.first_name},
-        ${body.last_name},
-        ${body.phone_number},
-        ${photoUrl},
-        ${body.salary},
-        ${Prisma.sql`${body.priority}::"Priority"`}
-      )
-      RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority"
-      `;
-      console.log("User inserted successfully: ", insertedUser);
-      return insertedUser;
     } catch (error) {
       console.error("Error inserting user: ", error);
       return { error: "Failed to insert user" };
