@@ -144,6 +144,7 @@ app.post(
       const salt = generateSalt();
       const hashedPassword = encryptWithSalt(body.password, salt);
       const photoUrl = body.photo_url ? body.photo_url : "default_photo";
+      const role: user_role = body.role;
 
       const insertedUser = await db.$queryRaw`
       INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "role")
@@ -180,7 +181,7 @@ app.post(
       salary: t.Number({
         minimum: 0,
       }),
-      role: t.Enum(user_role),
+      role: t.Enum({user:"user", admin:"admin"}),
     }),
     detail: {
       tags: ["User"],
