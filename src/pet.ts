@@ -1,6 +1,5 @@
 import { Elysia, t } from "elysia";
 import db from "./db";
-import { sex } from "@prisma/client";
 
 const app = new Elysia({ prefix: "/pet" });
 
@@ -78,7 +77,7 @@ app.post(
       }),
       species: t.String(),
       breed: t.String(),
-      sex: t.Enum(sex),
+      sex: t.Enum({male:"Male", female:"Female"}),
       photo_url: t.String(),
       weight: t.Number({
         minimum: 0,
@@ -129,7 +128,7 @@ app.put(
       ),
       species: t.Optional(t.String()),
       breed: t.Optional(t.String()),
-      sex: t.Optional(t.Enum(sex)),
+      sex: t.Optional(t.Enum({male:"Male", female:"Female"})),
       photo_url: t.Optional(t.String()),
       weight: t.Optional(
         t.Number({
