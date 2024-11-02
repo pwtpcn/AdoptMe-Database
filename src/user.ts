@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import crypto from "crypto";
 import db from "./db";
-import { Prisma, Priority } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 const app = new Elysia({ prefix: "/user" });
 app.get("/", () => "Hello Elysia");
@@ -144,7 +144,7 @@ app.post(
       const salt = generateSalt();
       const hashedPassword = encryptWithSalt(body.password, salt);
       const photoUrl = body.photo_url ? body.photo_url : "default_photo";
-      const role: Priority = body.priority;
+      const role = body.priority;
       
       if (role === "user") {
         const insertedUser = await db.$queryRaw`
@@ -277,7 +277,7 @@ app.put(
           minimum: 0,
         })
       ),
-      priority: t.Optional(t.Enum(Priority)),
+      priority: t.Optional(t.Enum({user:"user", admin:"admin"})),
     }),
     detail: {
       tags: ["User"],
