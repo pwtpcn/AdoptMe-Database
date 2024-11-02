@@ -1,98 +1,173 @@
 import { Elysia, t } from "elysia";
 import db from "./db";
-import {sex} from "@prisma/client";
+import { sex } from "@prisma/client";
 
-const app = new Elysia({prefix:"/pet"});
+const app = new Elysia({ prefix: "/pet" });
 
-app.get("/get", async () => {
-    const petList = await db.pet.findMany();
-    return petList;
-  },{
-      detail: {
-         tags: ["Pet"] 
+app.get(
+  "/getAllPet",
+  async () => {
+    try {
+      const petList = await db.pet.findMany();
+      return petList;
+    } catch (error) {
+      console.error("Error fetching pets: ", error);
+      return { error: "Failed to fetch pets" };
+    }
+  },
+  {
+    detail: {
+      tags: ["Pet"],
+    },
+  }
+);
+
+app.post(
+  "/getPetByID",
+  async ({ body }) => {
+    try {
+      const pet = await db.pet.findUnique({
+        where: { pet_id: body.pet_id },
+      });
+
+      if (!pet) {
+        return { message: "Pet not found" };
+      } else {
+        console.log("Get pet by ID successfully: ", pet);
+        return pet;
       }
-});
-
-app.post("/post", async ({body}) => {
-    const pet = db.pet.create({
-        data: body
-    });
-    return pet;
-},{
+    } catch (error) {
+      console.error("Error fetching pet: ", error);
+      return { error: "Failed to fetch pet" };
+    }
+  },
+  {
     body: t.Object({
-        pet_name: t.String(),
-        age_years: t.Integer({
-            minimum: 0
-        }),
-        age_months: t.Integer({
-            minimum: 0,
-            maximum: 11
-        }),
-        species: t.String(),
-        breed: t.String(),
-        sex: t.Enum(sex),
-        photo_url: t.String(),
-        weight: t.Number({
-            minimum: 0
-        }),
-        adopted: t.Boolean(),
-        spayed: t.Boolean(),
-        description: t.String()
+      pet_id: t.Number(),
     }),
     detail: {
-        tags: ["Pet"]
-    }
-});
+      tags: ["Pet"],
+    },
+  }
+);
 
-app.put("/put", async ({body}) => {
-    const pet = await db.pet.update({
+app.post(
+  "/post",
+  async ({ body }) => {
+    const insertedPet = db.pet.create({
+      data: body,
+    });
+    return insertedPet;
+  },
+  {
+    body: t.Object({
+      pet_name: t.String(),
+      age_years: t.Integer({
+        minimum: 0,
+      }),
+      age_months: t.Integer({
+        minimum: 0,
+        maximum: 11,
+      }),
+      species: t.String(),
+      breed: t.String(),
+      sex: t.Enum(sex),
+      photo_url: t.String(),
+      weight: t.Number({
+        minimum: 0,
+      }),
+      adopted: t.Boolean(),
+      spayed: t.Boolean(),
+      description: t.String(),
+      color: t.String(),
+    }),
+    detail: {
+      tags: ["Pet"],
+    },
+  }
+);
+
+app.put(
+  "/updatePetByID",
+  async ({ body }) => {
+    try {
+      const updatedPet = await db.pet.update({
         where: {
-            pet_id: body.pet_id,
+          pet_id: body.pet_id,
         },
-        data: body
-    });
-    return pet
-},{
-    body: t.Object({
-        pet_id: t.Number(),
-        pet_name: t.Optional(t.String()),
-        age_years: t.Optional(t.Integer({
-            minimum: 0
-        })),
-        age_months: t.Optional(t.Integer({
-            minimum: 0,
-            maximum: 11
-        })),
-        species: t.Optional(t.String()),
-        breed: t.Optional(t.String()),
-        sex: t.Optional(t.Enum(sex)),
-        photo_url: t.Optional(t.String()),
-        weight: t.Optional(t.Number({
-            minimum: 0
-        })),
-        adopted: t.Optional(t.Boolean()),
-        spayed: t.Optional(t.Boolean()),
-        description: t.Optional(t.String())
-    }),
-    detail: {
-        tags: ["Pet"]
-    }
-});
+        data: body,
+      });
 
-app.delete("/delete", async ({body}) => {
-    const pet = await db.pet.delete({
-        where: {
-            pet_id: body.pet_id
-        }
-    });
-    return pet;
-},{
+      console.log("Pet update successfully: ", updatedPet);
+      return updatedPet;
+    } catch (error) {
+      console.error("Error updating pet: ", error);
+      return { error: "Failed tp update pet" };
+    }
+  },
+  {
     body: t.Object({
-        pet_id: t.Number(),
+      pet_id: t.Number(),
+      pet_name: t.Optional(t.String()),
+      age_years: t.Optional(
+        t.Integer({
+          minimum: 0,
+        })
+      ),
+      age_months: t.Optional(
+        t.Integer({
+          minimum: 0,
+          maximum: 11,
+        })
+      ),
+      species: t.Optional(t.String()),
+      breed: t.Optional(t.String()),
+      sex: t.Optional(t.Enum(sex)),
+      photo_url: t.Optional(t.String()),
+      weight: t.Optional(
+        t.Number({
+          minimum: 0,
+        })
+      ),
+      adopted: t.Optional(t.Boolean()),
+      spayed: t.Optional(t.Boolean()),
+      description: t.Optional(t.String()),
+      color: t.Optional(t.String()),
     }),
     detail: {
-        tags: ["Pet"]
+      tags: ["Pet"],
+    },
+  }
+);
+
+app.delete(
+  "/deletePetByID",
+  async ({ body }) => {
+    try {
+      const deletedPet = await db.pet.delete({
+        where: {
+          pet_id: body.pet_id,
+        },
+      });
+
+      console.log("Pet deleted successfully: ", deletedPet);
+      return {
+        message: "Pet deleted successfully",
+        deleted_pet: deletedPet,
+      };
+    } catch (error) {
+      console.error("Error deleting pet: ", error);
+      return { error: "Failed to delete pet" };
     }
-});
+  },
+  {
+    body: t.Object({
+      pet_id: t.Number(),
+    }),
+    detail: {
+      tags: ["Pet"],
+    },
+  }
+);
 
 export default app;
