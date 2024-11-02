@@ -8,15 +8,17 @@ datasource db {
 }
 
 model user {
-  user_id                            Int        @id @default(autoincrement())
-  username                           String     @db.VarChar(50)
+  user_id                            String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username                           String     @unique @db.VarChar(50)
+  password                           String     @db.VarChar(512)
+  salt                               String     @db.VarChar(255)
   email                              String     @unique @db.VarChar(100)
-  password                           String     @db.VarChar(255)
   first_name                         String     @db.VarChar(50)
   last_name                          String     @db.VarChar(50)
   phone_number                       String     @db.VarChar(10)
   photo_url                          String?    @db.VarChar(255)
   salary                             Decimal    @db.Decimal(10, 2)
+  role                               user_role  @default(user)
   adoption_adoption_added_userTouser adoption[] @relation("adoption_added_userTouser")
   adoption_adoption_adopt_userTouser adoption[] @relation("adoption_adopt_userTouser")
 }
@@ -41,18 +43,23 @@ model pet {
 
 model adoption {
   added_id                       Int       @id @default(autoincrement())
-  adoption_id                    Int?
-  added_user                     Int?
-  adopt_user                     Int?
+  adoption_id                    Int?      @unique
+  added_user                     String?   @db.Uuid
+  adopt_user                     String?   @db.Uuid
   pet_id                         Int?
-  added_at                       DateTime  @default(now()) @db.Timestamp(6)
-  adopted_at                     DateTime? @db.Timestamp(6)
-  user_adoption_added_userTouser user?     @relation("adoption_added_userTouser", fields: [added_user], references: [user_id], onUpdate: NoAction)
-  user_adoption_adopt_userTouser user?     @relation("adoption_adopt_userTouser", fields: [adopt_user], references: [user_id], onUpdate: NoAction)
-  pet                            pet?      @relation(fields: [pet_id], references: [pet_id], onDelete: Cascade, onUpdate: NoAction)
+  added_date                     DateTime? @default(now()) @db.Timestamp(6)
+  adopted_date                   DateTime? @db.Timestamp(6)
+  user_adoption_added_userTouser user?     @relation("adoption_added_userTouser", fields: [added_user], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  user_adoption_adopt_userTouser user?     @relation("adoption_adopt_userTouser", fields: [adopt_user], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  pet                            pet?      @relation(fields: [pet_id], references: [pet_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum sex {
   Male
   Female
+}
+
+enum user_role {
+  user
+  admin
 }
