@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import crypto from "crypto";
 import db from "./db";
-import { Prisma, user_role } from "@prisma/client";
+import { Prisma, userRole } from "@prisma/client";
 
 const app = new Elysia({ prefix: "/user" });
 app.get("/", () => "Hello Elysia");
@@ -144,7 +144,7 @@ app.post(
       const salt = generateSalt();
       const hashedPassword = encryptWithSalt(body.password, salt);
       const photoUrl = body.photo_url ? body.photo_url : "default_photo";
-      const role: user_role = body.role;
+      const role: userRole = body.role;
 
       const insertedUser = await db.$queryRaw`
       INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "role")
@@ -158,7 +158,7 @@ app.post(
         ${body.phone_number},
         ${photoUrl},
         ${body.salary},
-        ${Prisma.sql`${body.role}::"user_role"`}
+        ${Prisma.sql`${body.role}::"userRole"`}
       )
       RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "role"
       `;
@@ -255,7 +255,7 @@ app.put(
           minimum: 0,
         })
       ),
-      role: t.Optional(t.Enum(user_role)),
+      role: t.Optional(t.Enum(userRole)),
     }),
     detail: {
       tags: ["User"],
