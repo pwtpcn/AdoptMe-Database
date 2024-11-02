@@ -20,7 +20,6 @@ model user {
   salary                             Decimal    @db.Decimal(10, 2)
   priority                           Priority   @default(user)
   adoption_adoption_added_userTouser adoption[] @relation("adoption_added_userTouser")
-  adoption_adoption_adopt_userTouser adoption[] @relation("adoption_adopt_userTouser")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -43,14 +42,11 @@ model pet {
 
 model adoption {
   added_id                       Int       @id @default(autoincrement())
-  adoption_id                    Int?      @unique
   added_user                     String?   @db.Uuid
-  adopt_user                     String?   @db.Uuid
   pet_id                         Int?
   added_date                     DateTime? @default(now()) @db.Timestamp(6)
   adopted_date                   DateTime? @db.Timestamp(6)
   user_adoption_added_userTouser user?     @relation("adoption_added_userTouser", fields: [added_user], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  user_adoption_adopt_userTouser user?     @relation("adoption_adopt_userTouser", fields: [adopt_user], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   pet                            pet?      @relation(fields: [pet_id], references: [pet_id], onDelete: NoAction, onUpdate: NoAction)
 }
 

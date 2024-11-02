@@ -83,7 +83,6 @@ app.post(
   }
 );
 
-
 app.put(
   "/updateAdoptionByID",
   async ({ body }) => {
@@ -105,9 +104,7 @@ app.put(
   {
     body: t.Object({
       added_id: t.Number(),
-      adoption_id: t.Optional(t.Number()),
       added_user: t.Optional(t.String()),
-      adopt_user: t.Optional(t.String()),
       pet_id: t.Optional(t.Number()),
       added_date: t.Optional(t.Date()),
       adopted_date: t.Optional(t.Date()),
@@ -123,11 +120,9 @@ app.put(
   async ({ body }) => {
     const adoption: any = await db.$queryRaw`
       UPDATE "adoption" 
-         SET "adoption_id" = (SELECT COUNT("adoption_id") + 1 FROM "adoption"),
-             "adopt_user" = (SELECT "user_id" FROM "user" WHERE "username" = ${body.username}),
-             "adopted_date" = NOW() AT TIME ZONE 'Asia/Bangkok'
-         WHERE "added_id" = ${body.added_id} AND "adopt_user" IS NULL
-         RETURNING "added_id", "adoption_id", "added_user", "adopt_user", "pet_id", "added_date", "adopted_date";
+         SET "adopted_date" = NOW() AT TIME ZONE 'Asia/Bangkok'
+         WHERE "added_id" = ${body.added_id}
+         RETURNING "added_id", "added_user", "pet_id", "added_date", "adopted_date";
       `;
     if (adoption.length === 0) {
       return {
@@ -152,7 +147,6 @@ app.put(
     },
     body: t.Object({
       added_id: t.Number(),
-      username: t.String(),
     }),
     detail: {
       tags: ["Adoption"],
@@ -196,15 +190,12 @@ app.get(
     const history = await db.$queryRaw`
       SELECT 
       "adoption"."added_id",
-      "adoption"."adoption_id",
       "added_user"."username" AS "added_username",
       "adoption"."added_date",
-      "adopt_user"."username" AS "adopt_username",
       "adoption"."adopted_date",
       "pet"."pet_name"
       FROM "adoption"
       LEFT JOIN "user" AS "added_user" ON "added_user"."user_id" = "adoption"."added_user"
-      LEFT JOIN "user" AS "adopt_user" ON "adopt_user"."user_id" = "adoption"."adopt_user"
       LEFT JOIN "pet" ON "pet"."pet_id" = "adoption"."pet_id";
     `;
     return history;
