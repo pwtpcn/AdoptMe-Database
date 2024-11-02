@@ -6,10 +6,44 @@ const app = new Elysia({ prefix: "/adoption" });
 app.get(
   "/getAllAdoption",
   async () => {
-    const adoptionList = await db.adoption.findMany();
-    return adoptionList;
+    try {
+      const adoptionList = await db.adoption.findMany();
+      return adoptionList;
+    } catch (error) {
+      console.error("Error fetching adoptions: ", error);
+      return { error: "Failed to fetch adoptions" };
+    }
   },
   {
+    detail: {
+      tags: ["Adoption"],
+    },
+  }
+);
+
+app.post(
+  "/getAdoptionByID",
+  async ({ body }) => {
+    try {
+      const adoption = await db.adoption.findUnique({
+        where: { added_id: body.added_id },
+      });
+
+      if (!adoption) {
+        return { message: "Adoption not found" };
+      } else {
+        console.log("Get adoption by ID successfully: ", adoption);
+        return adoption;
+      }
+    } catch (error) {
+      console.error("Error fetching adoption: ", error);
+      return { error: "Failed to fetch adoption" };
+    }
+  },
+  {
+    body: t.Object({
+      added_id: t.Number(),
+    }),
     detail: {
       tags: ["Adoption"],
     },
