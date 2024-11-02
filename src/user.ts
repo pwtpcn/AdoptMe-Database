@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import crypto from "crypto";
 import db from "./db";
-import { Prisma, userRole } from "@prisma/client";
+import { Prisma, Priority } from "@prisma/client";
 
 const app = new Elysia({ prefix: "/user" });
 app.get("/", () => "Hello Elysia");
@@ -20,7 +20,7 @@ app.get(
           phone_number: true,
           photo_url: true,
           salary: true,
-          role: true,
+          priority: true,
         },
       });
 
@@ -51,7 +51,7 @@ app.post(
           phone_number: true,
           photo_url: true,
           salary: true,
-          role: true,
+          priority: true,
         },
       });
 
@@ -102,7 +102,7 @@ app.post(
 
     if (authen[0].password === hashedPassword) {
       return db.$queryRaw`
-        SELECT "username", "role" FROM "user" WHERE "username" = ${username} LIMIT 1
+        SELECT "username", "priority" FROM "user" WHERE "username" = ${username} LIMIT 1
         `;
     } else {
       return JSON.stringify({
@@ -144,10 +144,10 @@ app.post(
       const salt = generateSalt();
       const hashedPassword = encryptWithSalt(body.password, salt);
       const photoUrl = body.photo_url ? body.photo_url : "default_photo";
-      const role: userRole = body.role;
+      const role: Priority = body.priority;
 
       const insertedUser = await db.$queryRaw`
-      INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "role")
+      INSERT INTO "user" ("username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority")
       VALUES (
         ${body.username},
         ${hashedPassword},
@@ -158,9 +158,9 @@ app.post(
         ${body.phone_number},
         ${photoUrl},
         ${body.salary},
-        ${Prisma.sql`${body.role}::"userRole"`}
+        ${Prisma.sql`${body.priority}::"Priority"`}
       )
-      RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "role"
+      RETURNING "user_id", "username", "password", "salt", "email", "first_name", "last_name", "phone_number", "photo_url", "salary", "priority"
       `;
       console.log("User inserted successfully: ", insertedUser);
       return insertedUser;
@@ -181,7 +181,7 @@ app.post(
       salary: t.Number({
         minimum: 0,
       }),
-      role: t.Enum({user:"user", admin:"admin"}),
+      priority: t.Enum({user:"user", admin:"admin"}),
     }),
     detail: {
       tags: ["User"],
@@ -217,7 +217,7 @@ app.put(
       if (body.phone_number !== undefined) updateData.phone_number = body.phone_number;
       if (body.photo_url !== undefined) updateData.photo_url = body.photo_url;
       if (body.salary !== undefined) updateData.salary = body.salary;
-      if (body.role !== undefined) updateData.role = body.role;
+      if (body.priority !== undefined) updateData.priority = body.priority;
 
       if (body.password !== undefined) {
         const salt = generateSalt();
@@ -255,7 +255,7 @@ app.put(
           minimum: 0,
         })
       ),
-      role: t.Optional(t.Enum(userRole)),
+      priority: t.Optional(t.Enum(Priority)),
     }),
     detail: {
       tags: ["User"],
