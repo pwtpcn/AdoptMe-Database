@@ -102,7 +102,7 @@ app.put(
       return updatedPet;
     } catch (error) {
       console.error("Error updating pet: ", error);
-      return { error: "Failed tp update pet" };
+      return { error: "Failed to update pet" };
     }
   },
   {
