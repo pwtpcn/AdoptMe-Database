@@ -18,7 +18,7 @@ model user {
   phone_number                       String     @db.VarChar(10)
   photo_url                          String?    @db.VarChar(255)
   salary                             Decimal    @db.Decimal(10, 2)
-  role                               user_role  @default(user)
+  role                               userRole  @default(user)
   adoption_adoption_added_userTouser adoption[] @relation("adoption_added_userTouser")
   adoption_adoption_adopt_userTouser adoption[] @relation("adoption_adopt_userTouser")
 }
@@ -59,7 +59,7 @@ enum sex {
   Female
 }
 
-enum user_role {
+enum userRole {
   user
   admin
 }
