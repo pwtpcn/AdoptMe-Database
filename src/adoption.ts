@@ -61,8 +61,8 @@ app.post(
       console.log("User inserted successfully: ", insertedAdoption);
       return insertedAdoption;
     } catch (error) {
-      console.error("Error inserting user: ", error);
-      return { error: "Failed to insert user" };
+      console.error("Error inserting adoption: ", error);
+      return { error: "Failed to insert adoption" };
     }
   },
   {

@@ -54,10 +54,17 @@ app.post(
 app.post(
   "/post",
   async ({ body }) => {
-    const insertedPet = db.pet.create({
-      data: body,
-    });
-    return insertedPet;
+    try {
+      const insertedPet = db.pet.create({
+        data: body,
+      });
+
+      console.log("Pet inserted successfully: ", insertedPet);
+      return insertedPet;
+    } catch (error) {
+      console.error("Error inserting pet: ", error);
+      return { error: "Failed to insert pet" };
+    }
   },
   {
     body: t.Object({
