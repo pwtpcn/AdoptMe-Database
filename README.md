@@ -1,4 +1,5 @@
-# Elysia with Bun runtime
+# Prisma Elysia Database
+## Part of Adoptme Website
 
 ## Getting Started
 To get started, simply paste this command into your terminal to install bun:
