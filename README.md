@@ -1,4 +1,4 @@
-# Prisma Elysia Database
+# Prisma Elysia API Database
 ## Part of Adoptme Website
 
 ## Getting Started
