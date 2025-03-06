@@ -87,3 +87,6 @@ AdpotionsController.put(
 		}
 	}
 )
+
+
+export default AdpotionsController;

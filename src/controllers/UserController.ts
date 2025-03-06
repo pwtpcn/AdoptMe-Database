@@ -156,3 +156,5 @@ UserController.delete(
 		}
 	}
 )
+
+export default UserController;

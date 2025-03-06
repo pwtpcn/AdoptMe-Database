@@ -130,3 +130,5 @@ PetController.delete(
 		}
 	}
 )
+
+export default PetController;

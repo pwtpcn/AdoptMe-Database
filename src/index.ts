@@ -1,9 +1,9 @@
 import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
-import user from "./user";
-import pet from "./pet";
-import adoption from "./adoption";
 import middleware from "./middleware";
+import UserController from "./controllers/UserController";
+import PetController from "./controllers/PetController";
+import AdpotionsController from "./controllers/AdoptionController";
 
 const app = new Elysia();
 app.use(
@@ -22,10 +22,9 @@ app.use(
 
 
 app.use(middleware);
-
-app.use(user);
-app.use(pet);
-app.use(adoption);
+app.use(UserController)
+app.use(PetController);
+app.use(AdpotionsController);
 
 app.listen(3000);
 
