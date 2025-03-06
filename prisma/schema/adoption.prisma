@@ -1,0 +1,9 @@
+model adoption {
+  id                             Int       @id @default(autoincrement())
+  pet_id                         Int
+  user_id                        String
+  createdAt                      DateTime  @default(now())
+  updatedAt                      DateTime  @updatedAt
+  user                           user?     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  pet                            pet?      @relation(fields: [pet_id], references: [pet_id], onDelete: NoAction, onUpdate: NoAction)
+}
