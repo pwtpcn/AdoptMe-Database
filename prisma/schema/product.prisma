@@ -1,0 +1,17 @@
+model Product {
+    id                  Int      @id @default(autoincrement())
+    product_category_id Int?
+    name                String   @db.VarChar(80)
+    price               Float
+    stock               Int
+	status				status	 @default(AVAILABLE)
+    createdAt           DateTime @default(now())
+    updatedAt           DateTime @updatedAt
+
+	product_category Product_category? @relation(fields: [product_category_id], references: [id])
+}
+
+enum status {
+	AVAILABLE
+	OUT_OF_STOCK
+}
