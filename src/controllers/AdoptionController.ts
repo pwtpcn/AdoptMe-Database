@@ -23,7 +23,7 @@ AdpotionsController.get(
 
 
 AdpotionsController.get(
-	"/getById:id",
+	"/getById/:id",
 	async ({ params: { id } }) => {
 		const adoptionsRepository = new AdoptionRepository();
 		const adoption = await adoptionsRepository.getById(id);

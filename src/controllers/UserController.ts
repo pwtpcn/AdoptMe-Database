@@ -107,7 +107,6 @@ UserController.post(
 }
 )
 
-
 UserController.put(
 	"/update",
 	async ({ body }) => {
