@@ -15,6 +15,12 @@ class AdoptionRepository{
 		});
 	}
 
+	public async getByPetId(id: number): Promise<adoption | null> {
+		return await db.adoption.findUnique({
+			where: { pet_id: id },
+		});
+	}
+
 	public async createAdoption({
 		pet_id,
 		user_id,
