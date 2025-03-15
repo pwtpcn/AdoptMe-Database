@@ -105,5 +105,21 @@ AdpotionsController.put(
 	}
 )
 
+AdpotionsController.delete(
+	"/delete",
+	async ({ body: { id } }) => {
+		const adoptionRepository = new AdoptionRepository();
+		const adoption = await adoptionRepository.deleteAdoption(id);
+		return adoption;
+	}, {
+		body: t.Object({
+			id: t.Number(),
+		}),
+		detail: {
+			summary: "Delete adoption",
+			description: "Delete adoption",
+		}
+	}
+)
 
 export default AdpotionsController;
