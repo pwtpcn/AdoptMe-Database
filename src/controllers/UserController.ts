@@ -47,6 +47,24 @@ UserController.get(
 	}
 )
 
+UserController.get(
+	"/getByUsername",
+	async ({ body: { username } }) => {
+		const userRepository = new UserRepository();
+		const user = await userRepository.getByUsername(username);
+		return user ?? { error: "User not found" };
+	},
+	{
+		body: t.Object({
+			username: t.String(),
+		}),
+		detail: {
+			summary: "Get user by id",
+			description: "Get user by id",
+		}
+	}
+)
+
 UserController.post(
 	"/login",
 	async ({ body: { username, password } }) => {
