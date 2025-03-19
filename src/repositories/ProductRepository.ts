@@ -21,11 +21,13 @@ class ProductRepository {
 		price,
 		stock,
 		description,
+		imageurl,
 	}: {
 		name: string;
 		price: number;
 		stock: number;
 		description: string;
+		imageurl: string;
 	}): Promise<product> {
 		try {
 			const response = await db.product.create({
@@ -34,6 +36,7 @@ class ProductRepository {
 					price: price,
 					stock: stock,
 					description: description,
+					imageurl: imageurl,
 				},
 			});
 			return response;
@@ -56,13 +59,9 @@ class ProductRepository {
 		product: Partial<product>;
 	}): Promise<product | null> {
 		try {
-			const response = await db.product.create({
-				data: {
-					name: name,
-					price: price,
-					stock: stock,
-					description: description,
-				},
+			const response = await db.product.update({
+				where: { id: id },
+				data: product
 			});
 			return response;
 		} catch (error) {
