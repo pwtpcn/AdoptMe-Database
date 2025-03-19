@@ -1,4 +1,4 @@
-model Product_category {
+model product_category {
 	id 					Int @id @default(autoincrement())
   	name                String @db.VarChar(50)
   	description         String @db.VarChar(255)
@@ -6,5 +6,5 @@ model Product_category {
   	updatedAt           DateTime @updatedAt
 
 
-  	product             Product[]
+  	product             product[]
 }
