@@ -23,7 +23,7 @@ AdpotionsController.get(
 
 
 AdpotionsController.get(
-	"/getById:id",
+	"/getById/:id",
 	async ({ params: { id } }) => {
 		const adoptionsRepository = new AdoptionRepository();
 		const adoption = await adoptionsRepository.getById(id);
@@ -40,6 +40,23 @@ AdpotionsController.get(
 	}
 )
 
+AdpotionsController.get(
+	"/getByPetId/:id",
+	async ({ params: { id } }) => {
+		const adoptionsRepository = new AdoptionRepository();
+		const adoption = await adoptionsRepository.getByPetId(id);
+		return adoption ?? { error: "Adoption not found" };
+	},
+	{
+		params: t.Object({
+			id: t.Number(),
+		}),
+		detail: {
+			summary: "Get adoption by id",
+			description: "Get adoption by id",
+		}
+	}
+)
 
 AdpotionsController.post(
 	"/createAdoption",
@@ -88,5 +105,21 @@ AdpotionsController.put(
 	}
 )
 
+AdpotionsController.delete(
+	"/delete",
+	async ({ body: { id } }) => {
+		const adoptionRepository = new AdoptionRepository();
+		const adoption = await adoptionRepository.deleteAdoption(id);
+		return adoption;
+	}, {
+		body: t.Object({
+			id: t.Number(),
+		}),
+		detail: {
+			summary: "Delete adoption",
+			description: "Delete adoption",
+		}
+	}
+)
 
 export default AdpotionsController;

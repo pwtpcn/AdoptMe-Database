@@ -22,7 +22,7 @@ PetController.get(
 )
 
 PetController.get(
-	"/getById:id",
+	"/getById/:id",
 	async ({ params: { id } }) => {
 		const petRepository = new PetRepository();
 		const pet = await petRepository.getById(id);
