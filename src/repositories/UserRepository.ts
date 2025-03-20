@@ -26,6 +26,12 @@ class UserRepository {
 			select: {
 				user_id: true,
 				username: true,
+				email: true,
+				first_name: true,
+				last_name: true,
+				phone_number: true,
+				photo_url: true,
+				salary: true,
 				salt: true,
 				password: true,
 				priority: true,

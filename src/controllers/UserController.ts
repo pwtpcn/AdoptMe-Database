@@ -29,7 +29,7 @@ UserController.get(
 	}
 )
 
-UserController.get(
+UserController.post(
 	"/getById",
 	async ({ body: { user_id } }) => {
 		const userRepository = new UserRepository();
@@ -47,7 +47,7 @@ UserController.get(
 	}
 )
 
-UserController.get(
+UserController.post(
 	"/getByUsername",
 	async ({ body: { username } }) => {
 		const userRepository = new UserRepository();
