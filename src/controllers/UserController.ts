@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { password } from "bun";
 import UserRepository from "../repositories/UserRepository";
-import { Prisma } from "@prisma/client";
+import { Priority, Prisma } from "@prisma/client";
 
 const UserController = new Elysia({
 	prefix: "/api/user",
@@ -125,12 +125,12 @@ UserController.post(
 }
 )
 
-UserController.put(
+UserController.patch(
 	"/update",
 	async ({ body }) => {
 		const userRepository = new UserRepository();
 		const user = await userRepository.updateUser({
-			id: body.id,
+			id: body.user_id,
 			user: {
 				...body,
 				salary: body.salary ? new Prisma.Decimal(body.salary) : undefined,
@@ -139,7 +139,7 @@ UserController.put(
 		return user;
 	}, {
 		body: t.Object({
-			id: t.String(),
+			user_id: t.String(),
 			username: t.Optional(t.String()),
 			email: t.Optional(t.String()),
 			first_name: t.Optional(t.String()),
@@ -148,7 +148,8 @@ UserController.put(
 			photo_url: t.Optional(t.String()),
 			salary: t.Optional(t.String()),
 			createdAt: t.Optional(t.Date()),
-			updateAt: t.Optional(t.Date()),
+			updatedAt: t.Optional(t.Date()),
+			priority: t.Optional(t.Enum(Priority))
 		}),
 		detail: {
 			summary: "Update user",

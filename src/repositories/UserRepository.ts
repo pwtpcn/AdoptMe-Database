@@ -15,17 +15,20 @@ class UserRepository {
 				phone_number: true,
 				photo_url: true,
 				salary: true,
+				priority: true
 			}
 		});
 	}
 
-	public async getByUsername(username: string): Promise< {user_id: string, salt: string, password: string} | null> {
+	public async getByUsername(username: string): Promise< {user_id: string, salt: string, password: string, priority : string, username: string} | null> {
 		return await db.user.findUnique({
 			where: { username},
 			select: {
 				user_id: true,
+				username: true,
 				salt: true,
 				password: true,
+				priority: true,
 			}
 		});
 	}
