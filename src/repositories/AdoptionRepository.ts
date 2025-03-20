@@ -49,6 +49,19 @@ class AdoptionRepository{
 		});
 	}
 
+	public async updateAdopted({
+		id
+	}: {
+		id: number;
+	}): Promise<adoption | null> {
+		return await db.adoption.update({
+			where: { id: id },
+			data: {
+				updatedAt : new Date()
+			}
+		});
+	}
+
 	public async deleteAdoption(id: number): Promise<adoption> {
 		return await db.adoption.delete({
 			where: { id: id },

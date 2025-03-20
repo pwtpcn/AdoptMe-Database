@@ -81,6 +81,26 @@ AdpotionsController.post(
 )
 
 AdpotionsController.put(
+	"/adopted",
+	async ({ body }) => {
+		const adoptionsRepository = new AdoptionRepository();
+		const updatedAdoption = await adoptionsRepository.updateAdopted({
+			id: body.id,
+		});
+		return updatedAdoption;
+	},
+	{
+		body: t.Object({
+			id: t.Number(),
+		}),
+		detail: {
+			summary: "Adopted",
+			description: "Adopted",
+		}
+	}
+)
+
+AdpotionsController.put(
 	"/updateAdoption",
 	async ({ body }) => {
 		const adoptionsRepository = new AdoptionRepository();
