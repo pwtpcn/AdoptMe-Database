@@ -8,6 +8,12 @@ class ProductRepository {
 		return await db.product.findMany();
 	}
 
+	public async getById(id: number): Promise<product | null> {
+		return await db.product.findUnique({
+			where: { id: id },
+		});
+	}
+
 	public async getByName(name: string): Promise<product | null> {
 		return await db.product.findFirst({
 			where: {
