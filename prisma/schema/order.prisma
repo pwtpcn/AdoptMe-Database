@@ -1,0 +1,20 @@
+model order {
+    id           Int          @id @default(autoincrement())
+    user_id      String
+    product_id   Int
+    quantity     Int
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+    order_status order_status @default(PENDING)
+    order_date   DateTime
+    total_price  Float
+
+    user    user    @relation(fields: [user_id], references: [user_id])
+    product product @relation(fields: [product_id], references: [id])
+}
+
+enum order_status {
+    PENDING
+    DELIVERED
+    CANCELLED
+}

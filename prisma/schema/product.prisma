@@ -11,6 +11,8 @@ model product {
     updatedAt           DateTime @updatedAt
 
 	product_category product_category? @relation(fields: [product_category_id], references: [id])
+
+    order order[]
 }
 
 enum status {
