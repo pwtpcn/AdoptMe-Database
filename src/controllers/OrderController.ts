@@ -22,15 +22,15 @@ OrderController.get(
 	}
 )
 
-OrderController.post(
-	"/getById", 
-	async ({ body: { id } }) => {
+OrderController.get(
+	"/getById/:id", 
+	async ({ params: { id } }) => {
 		const orderRepository = new OrderRepository();
 		const order = await orderRepository.getById(id);
 		return order ?? { error: "Order not found" };
 	},
 	{
-		body: t.Object({
+		params: t.Object({
 			id: t.Number(),
 		}),
 		detail: {
