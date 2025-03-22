@@ -1,9 +1,11 @@
-import { Elysia } from "elysia";
+import { Elysia, redirect } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import middleware from "./middleware";
 import UserController from "./controllers/UserController";
 import PetController from "./controllers/PetController";
 import AdpotionsController from "./controllers/AdoptionController";
+import ProductController from "./controllers/ProductController";
+import ProductCategoryController from "./controllers/ProductCategoryController";
 
 const app = new Elysia();
 app.use(
@@ -15,6 +17,8 @@ app.use(
         { name: "User", description: "User endpoint" },
         { name: "Pet", description: "Pet endpoint" },
         { name: "Adoption", description: "Adoption endpoint" },
+        { name: "Product", description: "Product endpoint" },
+        { name: "Product Category", description: "Product Category endpoint" },
       ],
     },
   })
@@ -25,6 +29,17 @@ app.use(middleware);
 app.use(UserController)
 app.use(PetController);
 app.use(AdpotionsController);
+app.use(ProductController);
+app.use(ProductCategoryController);
+
+app.get(
+  "/",
+  () => {
+    return redirect("/docs");
+  },
+  { detail: { tags: ["Home"], summary: "Home", description: "Redirect to API docs" } }
+);
+
 
 app.listen(3000);
 
