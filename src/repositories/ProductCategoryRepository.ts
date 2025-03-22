@@ -1,5 +1,12 @@
-import { product_category } from ".prisma/client";
+import { product_category, product } from ".prisma/client";
 import db from "./Database";
+
+interface ProductCategoryDetails extends Partial<product_category>{
+	id: number;
+	name: string;
+	description: string;
+	product: product[] | null;
+}
 
 class ProductCategoryRepository {
 
@@ -12,6 +19,16 @@ class ProductCategoryRepository {
 			where: { id: id },
 		});
 	}
+
+	public async getDetailsByName(name: string): Promise<Partial<ProductCategoryDetails>[] | null> {
+		return await db.product_category.findMany({
+			where: { name },
+			include: {
+				product: true,
+			},
+		});
+	}
+
 
 	public async getByName(name: string): Promise<product_category | null> {
 		return await db.product_category.findFirst({
@@ -56,4 +73,4 @@ class ProductCategoryRepository {
 	}
 }
 
-export default new ProductCategoryRepository();
+export default ProductCategoryRepository;

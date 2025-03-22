@@ -1,5 +1,6 @@
 import Elysia, { t } from "elysia";
 import ProductRepository from "../repositories/ProductRepository";
+import { DMMF } from "@prisma/client/runtime/library";
 
 
 const ProductController = new Elysia({
@@ -54,6 +55,7 @@ ProductController.post(
 			price: t.Number(),
 			stock: t.Number(),
 			description: t.String(),
+			product_category_id: t.Number(),
 			imageurl: t.String(),
 		}),
 		detail: {
@@ -76,6 +78,7 @@ ProductController.put(
 			name: t.Optional(t.String()),
 			price: t.Optional(t.Number()),
 			stock: t.Optional(t.Number()),
+			product_category_id: t.Optional(t.Number()),
 			description: t.Optional(t.String()),
 			imageurl: t.Optional(t.String()),
 		}),
@@ -103,3 +106,5 @@ ProductController.delete(
 		}
 	}
 )
+
+export default ProductController;

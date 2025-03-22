@@ -25,11 +25,13 @@ class ProductRepository {
 	public async createProduct({
 		name,
 		price,
+		product_category_id,
 		stock,
 		description,
 		imageurl,
 	}: {
 		name: string;
+		product_category_id: number;
 		price: number;
 		stock: number;
 		description: string;
@@ -41,6 +43,7 @@ class ProductRepository {
 					name: name,
 					price: price,
 					stock: stock,
+					product_category_id: product_category_id,
 					description: description,
 					imageurl: imageurl,
 				},
