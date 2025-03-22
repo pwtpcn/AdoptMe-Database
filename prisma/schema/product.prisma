@@ -1,6 +1,6 @@
 model product {
     id                  Int      @id @default(autoincrement())
-    product_category_id Int?
+    product_category_id Int
     name                String   @db.VarChar(80)
     imageurl            String
     description         String   @db.VarChar(255)

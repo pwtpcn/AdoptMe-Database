@@ -8,6 +8,12 @@ class ProductRepository {
 		return await db.product.findMany();
 	}
 
+	public async getById(id: number): Promise<product | null> {
+		return await db.product.findUnique({
+			where: { id: id },
+		});
+	}
+
 	public async getByName(name: string): Promise<product | null> {
 		return await db.product.findFirst({
 			where: {
@@ -19,11 +25,13 @@ class ProductRepository {
 	public async createProduct({
 		name,
 		price,
+		product_category_id,
 		stock,
 		description,
 		imageurl,
 	}: {
 		name: string;
+		product_category_id: number;
 		price: number;
 		stock: number;
 		description: string;
@@ -35,6 +43,7 @@ class ProductRepository {
 					name: name,
 					price: price,
 					stock: stock,
+					product_category_id: product_category_id,
 					description: description,
 					imageurl: imageurl,
 				},
