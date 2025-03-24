@@ -77,7 +77,7 @@ ProductCategoryController.post(
 )
 
 ProductCategoryController.delete(
-	"/deleteProductCategory/:id",
+	"/deleteProductCategory",
 	async ({body}) => {
 		const productCategoryRepository = new ProductCategoryRepository();
 		const productCategory = await productCategoryRepository.deleteProductCategory(body.id);
