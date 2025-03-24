@@ -1,6 +1,5 @@
 import Elysia, { t } from "elysia";
 import ProductRepository from "../repositories/ProductRepository";
-import { DMMF } from "@prisma/client/runtime/library";
 
 
 const ProductController = new Elysia({
