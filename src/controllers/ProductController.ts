@@ -3,6 +3,11 @@ import ProductRepository from "../repositories/ProductRepository";
 import { DMMF } from "@prisma/client/runtime/library";
 
 
+enum status {
+	AVAILABLE,
+	OUT_OF_STOCK
+}
+
 const ProductController = new Elysia({
 	prefix: "/api/product",
 	tags: ["Product"],
@@ -81,6 +86,10 @@ ProductController.put(
 			product_category_id: t.Optional(t.Number()),
 			description: t.Optional(t.String()),
 			imageurl: t.Optional(t.String()),
+			status: t.Optional(t.Enum({
+				AVAILABLE: "AVAILABLE",
+				OUT_OF_STOCK: "OUT_OF_STOCK",
+			})),
 		}),
 		detail: {
 			summary: "Update product",
@@ -106,5 +115,6 @@ ProductController.delete(
 		}
 	}
 )
+
 
 export default ProductController;
