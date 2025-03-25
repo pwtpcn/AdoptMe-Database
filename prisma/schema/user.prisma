@@ -13,6 +13,7 @@ model user {
   updatedAt                          DateTime   @updatedAt
   priority                           Priority   @default(USER)
   adoption_adoption_added_userTouser adoption[] @relation()
+  cart                               cart[]
 
   order order[]
 }

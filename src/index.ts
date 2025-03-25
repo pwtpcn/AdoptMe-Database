@@ -6,6 +6,7 @@ import PetController from "./controllers/PetController";
 import AdpotionsController from "./controllers/AdoptionController";
 import ProductController from "./controllers/ProductController";
 import ProductCategoryController from "./controllers/ProductCategoryController";
+import CartController from "./controllers/CartController";
 
 const app = new Elysia();
 app.use(
@@ -31,6 +32,7 @@ app.use(PetController);
 app.use(AdpotionsController);
 app.use(ProductController);
 app.use(ProductCategoryController);
+app.use(CartController);
 
 app.get(
   "/",
