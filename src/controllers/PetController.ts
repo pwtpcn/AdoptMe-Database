@@ -77,7 +77,7 @@ PetController.post(
 }
 )
 
-PetController.put(
+PetController.patch(
 	"/updatePet",
 	async ({ body }) => {
 		const petRepository = new PetRepository();

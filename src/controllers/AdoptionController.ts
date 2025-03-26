@@ -80,7 +80,7 @@ AdpotionsController.post(
 	}
 )
 
-AdpotionsController.put(
+AdpotionsController.patch(
 	"/adopted",
 	async ({ body }) => {
 		const adoptionsRepository = new AdoptionRepository();
@@ -100,7 +100,7 @@ AdpotionsController.put(
 	}
 )
 
-AdpotionsController.put(
+AdpotionsController.patch(
 	"/updateAdoption",
 	async ({ body }) => {
 		const adoptionsRepository = new AdoptionRepository();

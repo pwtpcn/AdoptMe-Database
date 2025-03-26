@@ -69,7 +69,7 @@ ProductController.post(
 	}
 )
 
-ProductController.put(
+ProductController.patch(
 	"/updateProduct",
 	async ({ body }) => {
 		const productRepository = new ProductRepository();

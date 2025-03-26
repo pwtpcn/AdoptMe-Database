@@ -95,7 +95,7 @@ class UserRepository {
 			if (error instanceof PrismaClientKnownRequestError){
 				switch (error.code){
 					case 'P2002':
-						throw  JSON.stringify({ error: 'Username already exists' });
+						throw  JSON.stringify({ error: 'Username already exists'+error.message });
 					default :
 						throw JSON.stringify({ error: error.code + error.message });
 				}
