@@ -15,9 +15,9 @@ class AdoptionRepository{
 		});
 	}
 
-	public async getByPetId(id: number): Promise<adoption | null> {
-		return await db.adoption.findUnique({
-			where: { id: id },
+	public async getByPetId(pet_id: number): Promise<adoption | null> {
+		return await db.adoption.findFirst({
+			where: { pet_id: pet_id },
 		});
 	}
 
