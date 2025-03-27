@@ -146,7 +146,7 @@ UserController.patch(
 			last_name: t.Optional(t.String()),
 			phone_number: t.Optional(t.String()),
 			photo_url: t.Optional(t.String()),
-			salary: t.Optional(t.String()),
+			salary: t.Optional(t.Number()),
 			createdAt: t.Optional(t.Date()),
 			updatedAt: t.Optional(t.Date()),
 			priority: t.Optional(t.Enum(Priority))
