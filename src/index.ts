@@ -7,6 +7,7 @@ import AdpotionsController from "./controllers/AdoptionController";
 import ProductController from "./controllers/ProductController";
 import ProductCategoryController from "./controllers/ProductCategoryController";
 import CartController from "./controllers/CartController";
+import OrderController from "./controllers/OrderController";
 
 const app = new Elysia();
 app.use(
@@ -33,6 +34,8 @@ app.use(AdpotionsController);
 app.use(ProductController);
 app.use(ProductCategoryController);
 app.use(CartController);
+app.use(OrderController);
+
 
 app.get(
   "/",

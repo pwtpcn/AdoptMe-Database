@@ -85,7 +85,10 @@ OrderController.patch(
 				quantity: t.Optional(t.Number()),
 				total_price: t.Optional(t.Number()),
 				order_status: t.Optional(t.Enum(order_status)),
-				order_date: t.Optional(t.Date())
+				order_date: t.Optional(t.Date()),
+				rating: t.Optional(t.String()),  
+                comment: t.Optional(t.String()),
+				reply_admin: t.Optional(t.String())
 			})
 		}),
 		detail: {
@@ -94,6 +97,22 @@ OrderController.patch(
 		}
 	}
 )
-
+OrderController.get(
+	"/getByProductId/:id", 
+	async ({ params: { id } }) => {
+		const orderRepository = new OrderRepository();
+		const order = await orderRepository.getByProductId(id);
+		return order ?? { error: "Order not found" };
+	},
+	{
+		params: t.Object({
+			id: t.Number(),
+		}),
+		detail: {
+			summary: "Get order by product id",
+			description: "Retrieve all orders associated with a specific product ID",
+		}
+	}
+)
 export default OrderController;
 
