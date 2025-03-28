@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia, { error, t } from "elysia";
 import ProductCategoryRepository from "../repositories/ProductCategoryRepository";
 
 const ProductCategoryController = new Elysia({
@@ -11,7 +11,7 @@ ProductCategoryController.get(
 	async () => {
 		const productCategoryRepository = new ProductCategoryRepository();
 		const productCategory = await productCategoryRepository.getAll();
-		return productCategory ?? { error: "Product Category not found" };
+		return productCategory ?? error(404, { error: "Product Category list  not found" });
 	},
 	{
 		detail: {
@@ -26,7 +26,7 @@ ProductCategoryController.get(
 	async ({ params: { id } }) => {
 		const productCategoryRepository = new ProductCategoryRepository();
 		const productCategory = await productCategoryRepository.getById(id);
-		return productCategory ?? { error: "Product Category not found" };
+		return productCategory ?? error(404, { error: "Product Category not found" });
 	},
 	{
 		params: t.Object({
@@ -39,30 +39,12 @@ ProductCategoryController.get(
 	}
 )
 
-ProductCategoryController.get(
-	"/getByName/:name",
-	async ({ params: { name } }) => {
-		const productCategoryRepository = new ProductCategoryRepository();
-		const productCategory = await productCategoryRepository.getDetailsByName(name);
-		return productCategory ?? { error: "Product Category not found" };
-	},
-	{
-		params: t.Object({
-			name: t.String(),
-		}),
-		detail: {
-			summary: "Get product category by name",
-			description: "Get product category by name",
-		}
-	}
-)
-
 ProductCategoryController.post(
 	"/createProductCategory",
 	async ({ body }) => {
 		const productCategoryRepository = new ProductCategoryRepository();
 		const productCategory = await productCategoryRepository.createProductCategory(body);
-		return productCategory ?? { error: "Product Category not created" };
+		return productCategory;
 	},
 	{
 		body: t.Object({
@@ -80,8 +62,12 @@ ProductCategoryController.delete(
 	"/deleteProductCategory",
 	async ({body}) => {
 		const productCategoryRepository = new ProductCategoryRepository();
+		const finded = await productCategoryRepository.getById(body.id);
+		if (!finded) {
+			return error(404, { error: "Product Category not found" });
+		}
 		const productCategory = await productCategoryRepository.deleteProductCategory(body.id);
-		return productCategory ?? { error: "Product Category not deleted" };
+		return productCategory;
 	},
 	{
 		body: t.Object({

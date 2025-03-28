@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia, { error, t } from "elysia";
 import ProductRepository from "../repositories/ProductRepository";
 
 
@@ -18,7 +18,7 @@ ProductController.get(
 	async () => {
 		const productRepository = new ProductRepository();
 		const product = await productRepository.getAll();
-		return product ?? { error: "Product not found" };
+		return product ?? error(404,{error: "Product not found"});
 	},
 	{
 		detail: {
@@ -33,7 +33,7 @@ ProductController.get(
 	async ({ params: { id } }) => {
 		const productRepository = new ProductRepository();
 		const product = await productRepository.getById(id);
-		return product ?? { error: "Product not found" };
+		return product ?? error(404,{error: "Product not found"} );
 	},
 	{
 		params: t.Object({
@@ -70,11 +70,53 @@ ProductController.post(
 )
 
 ProductController.patch(
+	"/orderProduct",
+	async ({ body }) => {
+		const productRepository = new ProductRepository();
+		const product = await productRepository.getById(body.id);
+		if (!product) {
+			return error(404,{error: "Product not found"}
+			);
+		}
+		if (product.stock < body.total) {
+			return error(400,{error: "Not enough stock"}
+			);
+		}
+		const newStock = product.stock - body.total;
+		let productStatus = "AVAILABLE";
+		if (newStock === 0) {
+			productStatus = "OUT_OF_STOCK";
+		}
+
+		const updatedProduct = await productRepository.updateProduct({
+			id: body.id,
+			product: { stock: newStock, status: "OUT_OF_STOCK" },
+		});
+
+		return updatedProduct ?? { error: "Product not updated" };
+	},
+	{
+		body: t.Object({
+			id: t.Number(),
+			total: t.Number(),
+		}),
+		detail: {
+			summary: "Order product",
+			description: "Order product",
+		}
+	}
+)
+
+ProductController.patch(
 	"/updateProduct",
 	async ({ body }) => {
 		const productRepository = new ProductRepository();
+		const findedProduct = await productRepository.getById(body.id);
+		if (!findedProduct) {
+			return error(404,{error: "Product not found"} );
+		}
 		const product = await productRepository.updateProduct({ id:body.id, product: body });
-		return product ?? { error: "Product not updated" };
+		return product;
 	},
 	{
 		body: t.Object({
@@ -101,8 +143,12 @@ ProductController.delete(
 	"/deleteProduct",
 	async ({ body }) => {
 		const productRepository = new ProductRepository();
+		const findedProduct = await productRepository.getById(body.id);
+		if (!findedProduct) {
+			return error(404,{error: "Product not found"} );
+		}
 		const product = await productRepository.deleteProduct(body.id);
-		return product ?? { error: "Product not deleted" };
+		return product ?? error(404,{error: "Product not found"} );
 	},
 	{
 		body: t.Object({
