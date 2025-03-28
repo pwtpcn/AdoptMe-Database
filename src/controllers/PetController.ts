@@ -41,7 +41,7 @@ PetController.get(
 
 PetController.post(
 	"/createPet",
-	async ({ body: { pet_name, age_years, age_months, species, breed, weight, photo_url, sex } }) => {
+	async ({ body: { pet_name, age_years, age_months, species, breed, weight, photo_url, sex, adopted, spayed, description, color } }) => {
 		const petRepository = new PetRepository();
 		const pet = await petRepository.createPet({
 			pet_name,
@@ -52,6 +52,10 @@ PetController.post(
 			weight,
 			photo_url,
 			sex,
+			adopted,
+			spayed,
+			description,
+			color,
 		});
 		return pet;
 	}, {
@@ -68,6 +72,10 @@ PetController.post(
 			FEMALE: "FEMALE",
 			UNKNOW: "UNKNOWN",
 		}),
+		adopted: t.Boolean(),
+		spayed: t.Boolean(),
+		description: t.String(),
+		color: t.String(),
 	}),
 	detail: {
 		summary: "Create pet",

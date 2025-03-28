@@ -23,6 +23,10 @@ class PetRepository {
 		weight,
 		photo_url,
 		sex,
+		adopted,
+		spayed,
+		description,
+		color,
 	}: {
 		pet_name: string;
 		age_years: number;
@@ -31,7 +35,11 @@ class PetRepository {
 		breed: string;
 		weight: number;
 		photo_url: string;
-		sex: sex,
+		sex: sex;
+		adopted: boolean;
+		spayed: boolean;
+		description: string;
+		color: string;
 	}): Promise<pet> {
 		try {
 			const respone = await db.pet.create({
@@ -44,6 +52,10 @@ class PetRepository {
 					weight: weight,
 					photo_url: photo_url,
 					sex: sex,
+					adopted: adopted,
+					spayed: spayed,
+					description: description,
+					color: color,
 				},
 			});
 			return respone;
