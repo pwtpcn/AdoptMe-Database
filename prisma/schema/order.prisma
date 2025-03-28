@@ -8,6 +8,9 @@ model order {
     order_status order_status @default(PENDING)
     order_date   DateTime
     total_price  Float
+    rating       String?    
+    comment      String?   
+    reply_admin  String?   
 
     user    user    @relation(fields: [user_id], references: [user_id])
     product product @relation(fields: [product_id], references: [id])

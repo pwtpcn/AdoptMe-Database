@@ -19,6 +19,17 @@ class OrderRepository {
 		});
 	}
 
+	public async getByProductId(product_id: number): Promise<order[]> {
+		return await db.order.findMany({
+			where: {
+				product_id: product_id,
+				NOT: {
+					comment: null,
+					rating: null,
+				},
+			}
+		});
+	}
 	public async createOrder({
 		user_id,
 		product_id,
