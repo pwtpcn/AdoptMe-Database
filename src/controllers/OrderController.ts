@@ -40,6 +40,25 @@ OrderController.get(
 	}
 )
 
+OrderController.get(
+	"/getByUserId/:user_id", 
+	async ({ params: { user_id } }) => {
+		const orderRepository = new OrderRepository();
+		const orders = await orderRepository.getByUserId(user_id);
+		return orders.length > 0 ? orders : { error: "No orders found for this user" };
+	},
+	{
+		params: t.Object({
+			user_id: t.String(),
+		}),
+		detail: {
+			summary: "Get orders by user ID",
+			description: "Retrieve all orders associated with a specific user ID",
+		}
+	}
+)
+
+
 OrderController.post(
 	"/createOrder",
 	async ({ body : { user_id, product_id, quantity, total_price, session_id } }) => {
