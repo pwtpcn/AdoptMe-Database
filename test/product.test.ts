@@ -46,7 +46,6 @@ describe("Product API", () => {
 		productCategoryId = data.id;
 	});
 
-
 	it("create a new product", async () => {
 		const response = await fetch("http://localhost:3000/api/product/createProduct", {
 		  method: "POST",
@@ -63,7 +62,6 @@ describe("Product API", () => {
 
 		const data = await response.json();
 		id = data.id;
-		console.log(data.name);
 		expect(response.status).toBe(200);
 		expect(data.name).toBe("Test Product");
 	});

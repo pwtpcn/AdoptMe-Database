@@ -42,13 +42,14 @@ OrderController.get(
 
 OrderController.post(
 	"/createOrder",
-	async ({ body : { user_id, product_id, quantity, total_price } }) => {
+	async ({ body : { user_id, product_id, quantity, total_price, session_id } }) => {
 		const orderRepository = new OrderRepository();
 		const order = await orderRepository.createOrder({
             user_id,
             product_id,
             quantity,
-            total_price  
+            total_price,
+			session_id
         });
 		return order;
 	},
@@ -58,6 +59,7 @@ OrderController.post(
 			product_id: t.Number(),
 			quantity: t.Number(),
 			total_price: t.Number(),
+			session_id: t.String()
 		}),
 		detail: {
 			summary: "Create order",
