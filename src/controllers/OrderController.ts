@@ -135,5 +135,49 @@ OrderController.get(
 		}
 	}
 )
+OrderController.patch(
+	"/addComment",
+	async ({ body: { id, rating, comment } }) => {
+		const orderRepository = new OrderRepository();
+		const updatedOrder = await orderRepository.addComment({
+            id,
+            rating,
+			comment
+		});
+		return updatedOrder;
+	},
+	{
+		body: t.Object({
+			id: t.Number(),
+			rating: t.String(),
+			comment: t.String()
+		}),
+		detail: {
+			summary: "Add comment",
+			description: "Add comment",
+		}
+	}
+);
+OrderController.patch(
+	"/addReplyAdmin",
+	async ({ body: { id, reply_admin } }) => {
+		const orderRepository = new OrderRepository();
+		const updatedOrder = await orderRepository.addReplyAdmin({
+            id,
+			reply_admin
+		});
+		return updatedOrder;
+	},
+	{
+		body: t.Object({
+			id: t.Number(),
+			reply_admin: t.String()
+		}),
+		detail: {
+			summary: "Add reply",
+			description: "Add reply",
+		}
+	}
+);
 export default OrderController;
 
