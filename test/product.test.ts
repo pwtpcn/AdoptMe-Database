@@ -68,6 +68,25 @@ describe("Product API", () => {
 		expect(data.name).toBe("Test Product");
 	});
 
+	it("create a new product with out stcok", async () => {
+		const response = await fetch("http://localhost:3000/api/product/createProduct", {
+		  method: "POST",
+		  headers: { "Content-Type": "application/json" },
+		  body: JSON.stringify({
+			name: "Test Product",
+			price: 100,
+			description: "Test description",
+			product_category_id: 1,
+			imageurl: "test-product.jpg",
+		  }),
+		});
+
+		const data = await response.json();
+		console.log(data);
+		expect(response.status).toBe(422);
+		expect(data.summary).toBe("Property 'stock' is missing");
+	});
+
 	it("get one product by id", async () => {
 		const response = await fetch(`http://localhost:3000/api/product/getById/${id}`);
 		const data = await response.json();
