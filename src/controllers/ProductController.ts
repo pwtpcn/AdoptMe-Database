@@ -1,7 +1,6 @@
 import Elysia, { error, t } from "elysia";
 import ProductRepository from "../repositories/ProductRepository";
 
-
 enum status {
 	AVAILABLE,
 	OUT_OF_STOCK
@@ -83,17 +82,17 @@ ProductController.patch(
 			);
 		}
 		const newStock = product.stock - body.total;
-		let productStatus = "AVAILABLE";
-		if (newStock === 0) {
-			productStatus = "OUT_OF_STOCK";
-		}
+		const newStatus = newStock > 0 ? "AVAILABLE" : "OUT_OF_STOCK"
 
 		const updatedProduct = await productRepository.updateProduct({
 			id: body.id,
-			product: { stock: newStock, status: "OUT_OF_STOCK" },
+			product: { 
+				stock: newStock, 
+				status: newStatus
+			},
 		});
 
-		return updatedProduct ?? { error: "Product not updated" };
+		return updatedProduct;
 	},
 	{
 		body: t.Object({

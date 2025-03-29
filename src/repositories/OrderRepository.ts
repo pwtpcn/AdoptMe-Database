@@ -34,21 +34,25 @@ class OrderRepository {
 		user_id,
 		product_id,
 		quantity,
-		total_price
+		total_price,
+		session_id
 	}: {
 		user_id: string;
 		product_id: number;
 		quantity: number;
 		total_price: number;
+		session_id: string;
 	}): Promise<order> {
 		try {
 			const response = await db.order.create({
 				data: {
 					user_id: user_id,
 					product_id: product_id,
+					session_id: session_id,
 					quantity: quantity,
 					total_price: total_price,
-					order_date: new Date()
+					order_date: new Date(),
+					order_status: order_status.SUCCESSFUL
 				}
 			});
 			return response;
